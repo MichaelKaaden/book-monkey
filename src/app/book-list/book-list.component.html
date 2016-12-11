@@ -1,17 +1,3 @@
 <div class="ui middle aligned selection divided list">
-    <a *ngFor="let book of books" class="item">
-        <img class="ui tiny image"
-             *ngIf="book.thumbnails"
-             [src]="book.thumbnails[0].url">
-        <div class="content">
-            <div class="header">{{ book.title }}</div>
-            <div class="description"> {{ book.subtitle }}</div>
-            <div class="metadata">
-                <span *ngFor="let author of book.authors; let l = last">
-                    {{ author }}<span *ngIf="!l">, </span>
-                </span>
-            </div>
-            <div class="extra">ISBN {{ book.isbn }}</div>
-        </div>
-    </a>
+    <a *ngFor="let book of books" class="item bm-book-list-item" [book]="book"></a>
 </div>
