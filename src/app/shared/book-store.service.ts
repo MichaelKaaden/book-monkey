@@ -30,7 +30,20 @@ export class BookStoreService {
         ];
     }
 
+    /**
+     * Returns all books.
+     * @returns {Book[]}
+     */
     getAll(): Book[] {
         return this.books;
+    }
+
+    /**
+     * Returns the book that has the ISBN.
+     * @param isbn ISBN
+     * @returns {undefined|Book}
+     */
+    getSingle(isbn: string): Book {
+        return this.books.find(book => book.isbn === isbn);
     }
 }

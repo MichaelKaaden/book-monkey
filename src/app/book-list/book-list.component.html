@@ -2,5 +2,5 @@
     <a *ngFor="let book of books"
        class="item bm-book-list-item"
        [book]="book"
-       (click)="showDetails(book)"></a>
+       [routerLink]="book.isbn"></a>
 </div>
