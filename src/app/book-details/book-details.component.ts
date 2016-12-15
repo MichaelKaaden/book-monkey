@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BookDetailsComponent implements OnInit {
     book: Book;
-    @Output() showListEvent = new EventEmitter<any>();
 
     constructor(private bookStoreService: BookStoreService,
                 private route: ActivatedRoute) {
@@ -23,9 +22,5 @@ export class BookDetailsComponent implements OnInit {
 
     getRating(num: number) {
         return new Array(num);
-    }
-
-    showBookList(): void {
-        this.showListEvent.emit();
     }
 }
