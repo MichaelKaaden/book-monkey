@@ -1,0 +1,120 @@
+From ce4dd5e6181913ae98016997546049c1f7b00350 Mon Sep 17 00:00:00 2001
+From: Michael Kaaden <michael@kaaden.net>
+Date: Thu, 15 Dec 2016 18:34:56 +0100
+Subject: [PATCH] Clean up code not mentioned in the book
+
+---
+ src/app/book-details/book-details.component.html |  4 +---
+ src/app/book-details/book-details.component.ts   |  5 -----
+ src/app/book-list/book-list.component.ts         |  9 ++------
+ src/app/home/home.component.ts                   | 26 +++++++++++++++---------
+ 4 files changed, 19 insertions(+), 25 deletions(-)
+
+diff --git a/src/app/book-details/book-details.component.html b/src/app/book-details/book-details.component.html
+index 17597df..2128c3c 100644
+--- a/src/app/book-details/book-details.component.html
++++ b/src/app/book-details/book-details.component.html
+@@ -36,6 +36,4 @@
+             <img *ngFor="let thumbnail of book.thumbnails" [src]="thumbnail.url">
+         </div>
+     </div>
+-</div>
+-
+-<button (click)="showBookList()" class="ui red button">Zurück zur Buchliste</button>
+\ No newline at end of file
++</div>
+\ No newline at end of file
+diff --git a/src/app/book-details/book-details.component.ts b/src/app/book-details/book-details.component.ts
+index aa55c43..b0c4724 100644
+--- a/src/app/book-details/book-details.component.ts
++++ b/src/app/book-details/book-details.component.ts
+@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
+ })
+ export class BookDetailsComponent implements OnInit {
+     book: Book;
+-    @Output() showListEvent = new EventEmitter<any>();
+ 
+     constructor(private bookStoreService: BookStoreService,
+                 private route: ActivatedRoute) {
+@@ -24,8 +23,4 @@ export class BookDetailsComponent implements OnInit {
+     getRating(num: number) {
+         return new Array(num);
+     }
+-
+-    showBookList(): void {
+-        this.showListEvent.emit();
+-    }
+ }
+diff --git a/src/app/book-list/book-list.component.ts b/src/app/book-list/book-list.component.ts
+index 41430c1..a516672 100644
+--- a/src/app/book-list/book-list.component.ts
++++ b/src/app/book-list/book-list.component.ts
+@@ -1,6 +1,6 @@
+-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
++import { Component, OnInit } from '@angular/core';
+ 
+-import { Book, Thumbnail } from '../shared/book';
++import { Book } from '../shared/book';
+ import { BookStoreService } from '../shared/book-store.service';
+ 
+ @Component({
+@@ -9,7 +9,6 @@ import { BookStoreService } from '../shared/book-store.service';
+ })
+ export class BookListComponent implements OnInit {
+     books: Book[];
+-    @Output() showDetailsEvent = new EventEmitter<Book>();
+ 
+     constructor(private bookStoreService: BookStoreService) {
+     }
+@@ -17,8 +16,4 @@ export class BookListComponent implements OnInit {
+     ngOnInit() {
+         this.books = this.bookStoreService.getAll();
+     }
+-
+-    showDetails(book): void {
+-        this.showDetailsEvent.emit(book);
+-    }
+ }
+diff --git a/src/app/home/home.component.ts b/src/app/home/home.component.ts
+index 55ffebf..45e313d 100644
+--- a/src/app/home/home.component.ts
++++ b/src/app/home/home.component.ts
+@@ -1,19 +1,25 @@
+ import { Component, OnInit } from '@angular/core';
+ 
+ @Component({
+-  selector: 'bm-home',
+-  template: `
+-    <p>
+-      home Works!
+-    </p>
+-  `,
+-  styles: []
++    selector: 'bm-home',
++    template: `
++<div class="ui container">
++    <h1>Home</h1>
++    <p>Das ist der BookMonkey.</p>
++    <a routerLink="../books" class="ui red button">
++      Buchliste ansehen
++      <i class="right arrow icon"></i>
++    </a>
++  </div>
++`,
++    styles: []
+ })
+ export class HomeComponent implements OnInit {
+ 
+-  constructor() { }
++    constructor() {
++    }
+ 
+-  ngOnInit() {
+-  }
++    ngOnInit() {
++    }
+ 
+ }
+-- 
+2.10.1 (Apple Git-78)
+
