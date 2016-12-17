@@ -1,41 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Book, Thumbnail } from './book';
+import { Http, Headers } from '@angular/http';
+
+import { Book } from './book';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class BookStoreService {
-    books: Book[];
+    private api: string = 'http://localhost:3000';
+    private headers: Headers = new Headers();
 
-    constructor() {
-        this.books = [
-            new Book(
-                '9783864903571',
-                'Angular',
-                ['Johannes Hoppe', 'Danny Koppenhagen', 'Ferdinand Malcher', 'Gregor Woiwode'],
-                new Date(2016, 5, 26),
-                'Einstieg in die komponentenbasierte Entwicklung von Web- und Mobile-Anwendungen',
-                5,
-                [new Thumbnail('https://angular-buch.com/angular-buch.jpg', 'Buchcover')],
-                'Dieses Buch vermittelt einen Schnelleinstieg in Angular  ...'
-            ),
-            new Book(
-                '9783864901546',
-                'AngularJS',
-                ['Philipp Tarasiewicz', 'Robin Böhm'],
-                new Date(2014, 5, 29),
-                'Eine praktische Einführung',
-                5,
-                [new Thumbnail('https://goo.gl/Y5lFVE', 'Buchcover')],
-                'Dieses Buch führt Sie anhand eines zusammenhängenden Beispielprojekts ...'
-            )
-        ];
+    constructor(private http: Http) {
+        this.headers.append('Content-Type', 'application/json');
     }
 
     /**
      * Returns all books.
      * @returns {Book[]}
      */
-    getAll(): Book[] {
-        return this.books;
+    getAll(): Observable<Book[]> {
+        return this.http
+            .get(`${this.api}/books`)
+            .map(response => response.json());
     }
 
     /**
@@ -43,7 +29,47 @@ export class BookStoreService {
      * @param isbn ISBN
      * @returns {undefined|Book}
      */
-    getSingle(isbn: string): Book {
-        return this.books.find(book => book.isbn === isbn);
+    getSingle(isbn: string): Observable<Book> {
+        return this.http
+            .get(`${this.api}/book/${isbn}`)
+            .map(response => response.json());
+    }
+
+    /**
+     * Creates a new book.
+     * @param book The book
+     * @returns {Observable<Response>}
+     */
+    create(book: Book): Observable<any> {
+        return this.http
+            .post(`${this.api}/book`,
+                JSON.stringify(book),
+                {
+                    headers: this.headers
+                });
+    }
+
+    /**
+     * Updates a book.
+     * @param book The book
+     * @returns {Observable<Response>}
+     */
+    update(book: Book): Observable<any> {
+        return this.http
+            .put(`${this.api}/books/${book.isbn}`,
+                JSON.stringify(book),
+                {
+                    headers: this.headers
+                });
+    }
+
+    /**
+     * Removes a book.
+     * @param book The book
+     * @returns {Observable<Response>}
+     */
+    remove(book: Book): Observable<any> {
+        return this.http
+            .delete(`${this.api}/book/${book.isbn}`);
     }
 }
