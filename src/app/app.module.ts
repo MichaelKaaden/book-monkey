@@ -10,6 +10,8 @@ import { BookDetailsComponent } from './book-details/book-details.component';
 import { BookStoreService } from './shared/book-store.service';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BookFormComponent } from './book-form/book-form.component';
+import { DateValueAccessorModule } from 'angular-date-value-accessor';
 
 @NgModule({
     declarations: [
@@ -17,13 +19,15 @@ import { AppRoutingModule } from './app-routing.module';
         BookListComponent,
         BookListItemComponent,
         BookDetailsComponent,
-        HomeComponent
+        HomeComponent,
+        BookFormComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        DateValueAccessorModule
     ],
     providers: [BookStoreService],
     bootstrap: [AppComponent]
