@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
-import { BookStoreService } from '../shared/book-store.service';
 import { Book } from '../shared/book';
 import { BookFormErrorMessages } from './book-form-error-messages';
+import { BookStoreService } from '../shared/book-store.service';
 import { Thumbnail } from '../shared/thumbnail';
 
 @Component({
@@ -11,41 +12,139 @@ import { Thumbnail } from '../shared/thumbnail';
     templateUrl: './book-form.component.html',
 })
 export class BookFormComponent implements OnInit {
-    @ViewChild('myForm') myForm: NgForm;
-    book = Book.empty();
+    book: Book = Book.empty();
     errors = {};
+    isUpdatingBook: boolean = false;
+    myForm: FormGroup;
+    authors: FormArray;
+    thumbnails: FormArray;
 
-    constructor(private bookStoreService: BookStoreService) {
+    constructor(private bookStoreService: BookStoreService,
+                private formBuilder: FormBuilder,
+                private route: ActivatedRoute,
+                private router: Router) {
     }
 
     ngOnInit() {
-        this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
+        let isbn = this.route.snapshot.params['isbn'];
+        if (isbn) {
+            this.isUpdatingBook = true;
+            this.bookStoreService.getSingle(isbn)
+                .subscribe(book => {
+                    this.book = book;
+                    this.initBook();
+                });
+            this.initBook();
+        }
+    }
+
+    addAuthorControl() {
+        this.authors.push(this.formBuilder.control(null));
+    }
+
+    addThumbnailControl() {
+        this.thumbnails.push(this.formBuilder.group({
+            url: null,
+            title: null
+        }));
     }
 
     submitForm() {
+        // filter empty values
+        this.myForm.value.authors = this.myForm.value.authors.filter(author => author);
+        this.myForm.value.thumbnails = this.myForm.value.thumbnails.filter(thumbnail => thumbnail.url);
+
+        // create a book from the form properly
+        let book: Book = this.formValueToBook(this.myForm);
+
+        if (this.isUpdatingBook) {
+            this.bookStoreService.update(book)
+                .subscribe(res => res);
+            this.router.navigate(
+                [
+                    '../../books',
+                    book.isbn
+                ], {
+                    relativeTo: this.route
+                }
+            );
+        } else {
+            this.bookStoreService.create(book)
+                .subscribe(res => res);
+            this.myForm.reset();
+        }
+    }
+
+    private formValueToBook(formGroup: FormGroup): Book {
+        console.log("in formValueToBook");
+        let thumbnails: Thumbnail[] = [];
+        formGroup.value.thumbnails.map(thumbnail => {
+            thumbnails.push(new Thumbnail(thumbnail.url, thumbnail.title));
+        });
+
         let book = new Book(
-            this.myForm.value.isbn,
-            this.myForm.value.title,
-            this.myForm.value.authors.split(','),
-            this.myForm.value.published,
-            this.myForm.value.subtitle,
+            formGroup.value.isbn,
+            formGroup.value.title,
+            formGroup.value.authors,
+            formGroup.value.published,
+            formGroup.value.subtitle,
             null,
-            [
-                new Thumbnail(
-                    this.myForm.value.thumbnail.url,
-                    this.myForm.value.thumbnail.title
-                )
-            ],
-            this.myForm.value.description
+            thumbnails,
+            formGroup.value.description
         );
-        this.bookStoreService.create(book).subscribe(res => res);
-        this.myForm.reset();
+
+        return book;
+    }
+
+    private initBook() {
+        this.myForm = this.formBuilder.group({
+            title: [
+                this.book.title,
+                Validators.required
+            ],
+            subtitle: [
+                this.book.subtitle
+            ],
+            isbn: [
+                this.book.isbn, [
+                    Validators.required,
+                    Validators.minLength(10),
+                    Validators.maxLength(13)
+                ]
+            ],
+            description: [
+                this.book.description
+            ],
+            authors: this.buildAuthorsArray(),
+            thumbnails: this.buildThumbnailsArray(),
+            published: [
+                this.book.published
+            ]
+        });
+        this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
+    }
+
+    private buildAuthorsArray(): FormArray {
+        this.authors = this.formBuilder.array(this.book.authors, Validators.required);
+        return this.authors;
+    }
+
+    private buildThumbnailsArray(): FormArray {
+        this.thumbnails = this.formBuilder.array(
+            this.book.thumbnails.map(thumbnail => {
+                this.formBuilder.group({
+                    url: this.formBuilder.control(thumbnail.url),
+                    title: this.formBuilder.control(thumbnail.title)
+                });
+            })
+        );
+        return this.thumbnails;
     }
 
     private updateErrorMessages() {
         this.errors = {};
         for (let message of BookFormErrorMessages) {
-            let control = this.myForm.form.get(message.forControl);
+            let control = this.myForm.get(message.forControl);
             if (control &&
                 control.dirty &&
                 control.invalid &&
