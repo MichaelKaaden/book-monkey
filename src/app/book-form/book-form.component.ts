@@ -76,11 +76,10 @@ export class BookFormComponent implements OnInit {
     }
 
     private formValueToBook(formGroup: FormGroup): Book {
-        console.log("in formValueToBook");
         let thumbnails: Thumbnail[] = [];
-        formGroup.value.thumbnails.map(thumbnail => {
-            thumbnails.push(new Thumbnail(thumbnail.url, thumbnail.title));
-        });
+        formGroup.value.thumbnails.map(thumbnail =>
+            thumbnails.push(new Thumbnail(thumbnail.url, thumbnail.title))
+        );
 
         let book = new Book(
             formGroup.value.isbn,
@@ -131,12 +130,12 @@ export class BookFormComponent implements OnInit {
 
     private buildThumbnailsArray(): FormArray {
         this.thumbnails = this.formBuilder.array(
-            this.book.thumbnails.map(thumbnail => {
+            this.book.thumbnails.map(thumbnail =>
                 this.formBuilder.group({
                     url: this.formBuilder.control(thumbnail.url),
                     title: this.formBuilder.control(thumbnail.title)
-                });
-            })
+                })
+            )
         );
         return this.thumbnails;
     }
