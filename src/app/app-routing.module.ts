@@ -26,6 +26,10 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: BookFormComponent
+    },
+    {
+        path: 'admin/:isbn',
+        component: BookFormComponent
     }
 ];
 
