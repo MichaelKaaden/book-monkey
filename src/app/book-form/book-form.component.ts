@@ -34,8 +34,8 @@ export class BookFormComponent implements OnInit {
                     this.book = book;
                     this.initBook();
                 });
-            this.initBook();
         }
+        this.initBook();
     }
 
     addAuthorControl() {
