@@ -117,7 +117,7 @@ export class BookFormComponent implements OnInit {
             authors: this.buildAuthorsArray(),
             thumbnails: this.buildThumbnailsArray(),
             published: [
-                this.book.published
+                new Date(this.book.published)
             ]
         });
         this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
