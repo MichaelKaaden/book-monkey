@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class BookStoreService {
     private api: string = 'http://localhost:3000';
+    // private api: string = 'https://book-monkey2-api.angular-buch.com';
     private headers: Headers = new Headers();
 
     constructor(private http: Http) {
@@ -56,7 +57,7 @@ export class BookStoreService {
      */
     update(book: Book): Observable<any> {
         return this.http
-            .put(`${this.api}/books/${book.isbn}`,
+            .put(`${this.api}/book/${book.isbn}`,
                 JSON.stringify(book),
                 {
                     headers: this.headers
