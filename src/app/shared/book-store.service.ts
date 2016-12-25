@@ -24,15 +24,10 @@ export class BookStoreService {
     getAll(): Observable<Book[]> {
         return this.http
             .get(`${this.api}/books`)
-            .map(response => this.convertBooks(response));
-    }
-
-    private convertBooks(response): Book[] {
-        let books: Book[] = [];
-        for (let element of response.json()) {
-            books.push(BookFactory.fromObject(element));
-        }
-        return books;
+            .map(response => response.json())
+            .map(array => array.map(element => {
+                return BookFactory.fromObject(element);
+            }));
     }
 
     /**
