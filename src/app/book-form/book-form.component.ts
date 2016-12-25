@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
 import { Book } from '../shared/book';
+import { BookFactory } from './../shared/book-factory';
 import { BookFormErrorMessages } from './book-form-error-messages';
 import { BookStoreService } from '../shared/book-store.service';
 import { Thumbnail } from '../shared/thumbnail';
@@ -12,7 +13,7 @@ import { Thumbnail } from '../shared/thumbnail';
     templateUrl: './book-form.component.html',
 })
 export class BookFormComponent implements OnInit {
-    book: Book = Book.empty();
+    book: Book = BookFactory.empty();
     errors = {};
     isUpdatingBook: boolean = false;
     myForm: FormGroup;
@@ -55,7 +56,8 @@ export class BookFormComponent implements OnInit {
         this.myForm.value.thumbnails = this.myForm.value.thumbnails.filter(thumbnail => thumbnail.url);
 
         // create a book from the form properly
-        let book: Book = this.formValueToBook(this.myForm);
+        // hey! das sollten wir auch so machen! @danny, @ferdi
+        let book: Book = BookFactory.fromObject(this.myForm.value);
 
         if (this.isUpdatingBook) {
             this.bookStoreService.update(book)
@@ -75,27 +77,11 @@ export class BookFormComponent implements OnInit {
         }
     }
 
-    private formValueToBook(formGroup: FormGroup): Book {
-        let thumbnails: Thumbnail[] = [];
-        formGroup.value.thumbnails.map(thumbnail =>
-            thumbnails.push(new Thumbnail(thumbnail.url, thumbnail.title))
-        );
-
-        let book = new Book(
-            formGroup.value.isbn,
-            formGroup.value.title,
-            formGroup.value.authors,
-            formGroup.value.published,
-            formGroup.value.subtitle,
-            null,
-            thumbnails,
-            formGroup.value.description
-        );
-
-        return book;
-    }
-
     private initBook() {
+
+        this.buildAuthorsArray();
+        this.buildThumbnailsArray();
+
         this.myForm = this.formBuilder.group({
             title: [
                 this.book.title,
@@ -114,21 +100,20 @@ export class BookFormComponent implements OnInit {
             description: [
                 this.book.description
             ],
-            authors: this.buildAuthorsArray(),
-            thumbnails: this.buildThumbnailsArray(),
+            authors: this.authors,
+            thumbnails: this.thumbnails,
             published: [
-                new Date(this.book.published)
+                this.book.published
             ]
         });
         this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
     }
 
-    private buildAuthorsArray(): FormArray {
+    private buildAuthorsArray() {
         this.authors = this.formBuilder.array(this.book.authors, Validators.required);
-        return this.authors;
     }
 
-    private buildThumbnailsArray(): FormArray {
+    private buildThumbnailsArray() {
         this.thumbnails = this.formBuilder.array(
             this.book.thumbnails.map(thumbnail =>
                 this.formBuilder.group({
@@ -137,7 +122,6 @@ export class BookFormComponent implements OnInit {
                 })
             )
         );
-        return this.thumbnails;
     }
 
     private updateErrorMessages() {
