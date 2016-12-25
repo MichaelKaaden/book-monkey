@@ -1,5 +1,4 @@
 import { Thumbnail } from './thumbnail';
-export { Thumbnail } from './thumbnail';
 
 export class Book {
     constructor(public isbn: string,
