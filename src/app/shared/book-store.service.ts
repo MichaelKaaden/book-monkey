@@ -3,6 +3,7 @@ import { Http, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/retry';
 
 import { Book } from './book';
 import { BookFactory } from './book-factory';
@@ -24,21 +25,24 @@ export class BookStoreService {
     getAll(): Observable<Book[]> {
         return this.http
             .get(`${this.api}/books`)
+            .retry(3)
             .map(response => response.json())
-            .map(array => array.map(element => {
-                return BookFactory.fromObject(element);
-            }));
+            .map(rawBooks => rawBooks
+                .map(rawBook => BookFactory.fromObject(rawBook))
+            );
     }
 
     /**
      * Returns the book that has the ISBN.
      * @param isbn ISBN
-     * @returns {undefined|Book}
+     * @returns {Book}
      */
     getSingle(isbn: string): Observable<Book> {
         return this.http
             .get(`${this.api}/book/${isbn}`)
-            .map(response => BookFactory.fromObject(response.json()));
+            .retry(3)
+            .map(response => response.json())
+            .map(rawBook => BookFactory.fromObject(rawBook));
     }
 
     /**

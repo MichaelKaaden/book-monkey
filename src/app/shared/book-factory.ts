@@ -1,6 +1,7 @@
 import { Book } from './book';
 
 export class BookFactory {
+
     static empty(): Book {
         return new Book('', '', [''], new Date(), '', 0, [{url: '', title: ''}], '');
     }
