@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Book } from '../shared/book';
+import { BookFactory } from '../shared/book-factory';
 import { BookStoreService } from '../shared/book-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -17,7 +18,7 @@ export class BookDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.book = Book.empty();
+        this.book = BookFactory.empty();
         let params = this.route.snapshot.params;
         this.bookStoreService.getSingle(params['isbn'])
             .subscribe(book => this.book = book);
