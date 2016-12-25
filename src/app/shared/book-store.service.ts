@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
-import { Book } from './book';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
+
+import { Book } from './book';
+import { BookFactory } from './book-factory';
 
 @Injectable()
 export class BookStoreService {
@@ -22,7 +24,15 @@ export class BookStoreService {
     getAll(): Observable<Book[]> {
         return this.http
             .get(`${this.api}/books`)
-            .map(response => response.json());
+            .map(response => this.convertBooks(response));
+    }
+
+    private convertBooks(response): Book[] {
+        let books: Book[] = [];
+        for (let element of response.json()) {
+            books.push(BookFactory.fromObject(element));
+        }
+        return books;
     }
 
     /**
@@ -33,7 +43,7 @@ export class BookStoreService {
     getSingle(isbn: string): Observable<Book> {
         return this.http
             .get(`${this.api}/book/${isbn}`)
-            .map(response => response.json());
+            .map(response => BookFactory.fromObject(response.json()));
     }
 
     /**
