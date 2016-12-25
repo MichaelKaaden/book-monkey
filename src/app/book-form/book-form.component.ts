@@ -6,13 +6,14 @@ import { Book } from '../shared/book';
 import { BookFormErrorMessages } from './book-form-error-messages';
 import { BookStoreService } from '../shared/book-store.service';
 import { Thumbnail } from '../shared/thumbnail';
+import { BookFactory } from '../shared/book-factory';
 
 @Component({
     selector: 'bm-book-form',
     templateUrl: './book-form.component.html',
 })
 export class BookFormComponent implements OnInit {
-    book: Book = Book.empty();
+    book: Book = BookFactory.empty();
     errors = {};
     isUpdatingBook: boolean = false;
     myForm: FormGroup;
