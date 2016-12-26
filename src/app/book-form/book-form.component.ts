@@ -110,7 +110,6 @@ export class BookFormComponent implements OnInit {
                 this.book.published
             ]
         });
-        this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
         this.myForm.statusChanges.subscribe(() => this.updateErrorMessages());
     }
 
