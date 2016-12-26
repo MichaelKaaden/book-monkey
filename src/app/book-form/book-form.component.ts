@@ -111,6 +111,7 @@ export class BookFormComponent implements OnInit {
             ]
         });
         this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
+        this.myForm.statusChanges.subscribe(() => this.updateErrorMessages());
     }
 
     private buildAuthorsArray() {
