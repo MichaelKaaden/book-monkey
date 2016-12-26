@@ -6,13 +6,14 @@ import { Book } from '../shared/book';
 import { BookFactory } from '../shared/book-factory';
 import { BookFormErrorMessages } from './book-form-error-messages';
 import { BookStoreService } from '../shared/book-store.service';
+import { BookValidators } from '../shared/book.validators';
 
 @Component({
     selector: 'bm-book-form',
     templateUrl: './book-form.component.html',
 })
 export class BookFormComponent implements OnInit {
-    book: Book = BookFactory.empty();
+    book: Book;
     errors = {};
     isUpdatingBook: boolean = false;
     myForm: FormGroup;
@@ -34,6 +35,8 @@ export class BookFormComponent implements OnInit {
                     this.book = book;
                     this.initBook();
                 });
+        } else {
+            this.book = BookFactory.empty();
         }
         this.initBook();
     }
@@ -73,6 +76,8 @@ export class BookFormComponent implements OnInit {
             this.bookStoreService.create(book)
                 .subscribe(res => res);
             this.myForm.reset();
+            this.book = BookFactory.empty();
+            this.initBook();  // else the date will be "tt.mm.jjjj"
         }
     }
 
@@ -92,9 +97,9 @@ export class BookFormComponent implements OnInit {
             isbn: [
                 this.book.isbn, [
                     Validators.required,
-                    Validators.minLength(10),
-                    Validators.maxLength(13)
-                ]
+                    BookValidators.isbnFormat
+                ],
+                this.isUpdatingBook ? null : BookValidators.isbnExists(this.bookStoreService)
             ],
             description: [
                 this.book.description
@@ -106,10 +111,11 @@ export class BookFormComponent implements OnInit {
             ]
         });
         this.myForm.valueChanges.subscribe(() => this.updateErrorMessages());
+        this.myForm.statusChanges.subscribe(() => this.updateErrorMessages());
     }
 
     private buildAuthorsArray() {
-        this.authors = this.formBuilder.array(this.book.authors, Validators.required);
+        this.authors = this.formBuilder.array(this.book.authors, BookValidators.atLeastOneAuthor);
     }
 
     private buildThumbnailsArray() {

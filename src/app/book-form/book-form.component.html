@@ -94,7 +94,7 @@
 
     <button type="submit"
             class="ui button"
-            [disabled]="myForm.invalid">
+            [disabled]="myForm.invalid || myForm.pending">
         Speichern
     </button>
 </form>
