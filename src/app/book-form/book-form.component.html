@@ -22,6 +22,8 @@
     <div class="field" [class.disabled]="isUpdatingBook">
         <label>ISBN-Nummer</label>
         <input formControlName="isbn">
+        Valid: {{ myForm.controls.isbn.valid }}<br>
+        Pending: {{ myForm.controls.isbn.pending }}
         <div *ngIf="errors.isbn"
              class="ui negative message">
             {{ errors.isbn }}

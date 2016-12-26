@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/retry';
 
@@ -81,5 +82,16 @@ export class BookStoreService {
     remove(book: Book): Observable<any> {
         return this.http
             .delete(`${this.api}/book/${book.isbn}`);
+    }
+
+    /**
+     * Checks if an ISBN is already in use.
+     * @param isbn The ISBN
+     */
+    check(isbn: string): Observable<boolean> {
+        return this.http
+            .get(`${this.api}/book/${isbn}/check`)
+            // .delay(1000)
+            .map(response => response.json());
     }
 }
