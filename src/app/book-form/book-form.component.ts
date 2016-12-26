@@ -76,7 +76,7 @@ export class BookFormComponent implements OnInit {
             this.bookStoreService.create(book)
                 .subscribe(res => res);
             this.myForm.reset();
-            // this.book = BookFactory.empty();
+            this.book = BookFactory.empty();
             this.initBook();  // else the date will be "tt.mm.jjjj"
         }
     }
