@@ -24,6 +24,7 @@ export class BookFormComponent implements OnInit {
                 private formBuilder: FormBuilder,
                 private route: ActivatedRoute,
                 private router: Router) {
+        this.book = BookFactory.empty();
     }
 
     ngOnInit() {
@@ -35,8 +36,6 @@ export class BookFormComponent implements OnInit {
                     this.book = book;
                     this.initBook();
                 });
-        } else {
-            this.book = BookFactory.empty();
         }
         this.initBook();
     }
