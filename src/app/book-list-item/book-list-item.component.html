@@ -9,5 +9,5 @@
             {{ author }}<span *ngIf="!l">, </span>
         </span>
     </div>
-    <div class="extra">ISBN {{ book.isbn }}</div>
+    <div class="extra">{{ book.isbn | isbn:true }}</div>
 </div>

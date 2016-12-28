@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 
 import { Book } from '../shared/book';
 import { BookStoreService } from '../shared/book-store.service';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'bm-book-list',
     templateUrl: './book-list.component.html'
 })
 export class BookListComponent implements OnInit {
-    books: Book[];
+    booksObservable: Observable<Book[]>;
 
     constructor(private bookStoreService: BookStoreService) {
     }
 
     ngOnInit() {
-        this.bookStoreService.getAll()
-            .subscribe(res => this.books = res);
+        this.booksObservable = this.bookStoreService.getAll();
     }
 }
