@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BookFormComponent } from './book-form/book-form.component';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
+import { IsbnPipe } from './shared/isbn.pipe';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { DateValueAccessorModule } from 'angular-date-value-accessor';
         BookListItemComponent,
         BookDetailsComponent,
         HomeComponent,
-        BookFormComponent
+        BookFormComponent,
+        IsbnPipe
     ],
     imports: [
         BrowserModule,
