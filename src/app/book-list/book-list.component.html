@@ -1,6 +1,6 @@
 <div class="ui middle aligned selection divided list">
-    <p *ngIf="!books || books.length === 0">Noch keine Bücher eingetragen.</p>
-    <a *ngFor="let book of books"
+    <p *ngIf="(booksObservable | async)?.length === 0">Noch keine Bücher eingetragen.</p>
+    <a *ngFor="let book of booksObservable | async"
        class="item bm-book-list-item"
        [book]="book"
        [routerLink]="book.isbn"></a>

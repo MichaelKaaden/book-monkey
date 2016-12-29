@@ -12,6 +12,9 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BookFormComponent } from './book-form/book-form.component';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
+import { IsbnPipe } from './shared/isbn.pipe';
+import { ZoomDirective } from './shared/zoom.directive';
+import { DelayDirective } from './shared/delay.directive';
 
 @NgModule({
     declarations: [
@@ -20,7 +23,10 @@ import { DateValueAccessorModule } from 'angular-date-value-accessor';
         BookListItemComponent,
         BookDetailsComponent,
         HomeComponent,
-        BookFormComponent
+        BookFormComponent,
+        IsbnPipe,
+        ZoomDirective,
+        DelayDirective
     ],
     imports: [
         BrowserModule,

@@ -15,7 +15,7 @@
             </div>
             <div class="four wide column">
                 <h4 class="ui header">ISBN</h4>
-                {{ book.isbn }}
+                {{ book.isbn | isbn:true }}
             </div>
             <div class="four wide column">
                 <h4 class="ui header">Erschienen</h4>
@@ -23,7 +23,10 @@
             </div>
             <div class="four wide column">
                 <h4 class="ui header">Rating</h4>
-                <i *ngFor="let r of getRating(book.rating)" class="yellow star icon"></i>
+                <span *ngFor="let r of getRating(book.rating); let i = index">
+                    <i class="yellow star icon"
+                       *bmDelay="500 + i * 200"></i>
+                </span>
             </div>
         </div>
     </div>
