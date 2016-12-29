@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
-import { Book } from '../shared/book';
-import { BookFactory } from '../shared/book-factory';
+import { Book } from '../../shared/book';
+import { BookFactory } from '../../shared/book-factory';
 import { BookFormErrorMessages } from './book-form-error-messages';
-import { BookStoreService } from '../shared/book-store.service';
+import { BookStoreService } from '../../shared/book-store.service';
 import { BookValidators } from '../shared/book.validators';
 
 @Component({

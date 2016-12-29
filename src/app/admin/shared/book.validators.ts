@@ -1,5 +1,5 @@
 import { FormControl, FormArray, ValidatorFn } from '@angular/forms';
-import { BookStoreService } from './book-store.service';
+import { BookStoreService } from '../../shared/book-store.service';
 import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/do';
 
