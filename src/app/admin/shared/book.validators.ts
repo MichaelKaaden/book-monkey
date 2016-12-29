@@ -7,7 +7,7 @@ export class BookValidators {
     static isbnFormat(control: FormControl): {[error: string]: any} {
         if (!control.value) {
             return null;
-        }
+        } 286
 
         let isolatedNumbers = control.value.replace(/-/g, '');
         const isbnPattern = /(^\d{10}$|^\d{13}$)/;
