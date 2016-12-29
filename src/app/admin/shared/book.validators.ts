@@ -1,5 +1,5 @@
 import { FormControl, FormArray, ValidatorFn } from '@angular/forms';
-import { BookStoreService } from './book-store.service';
+import { BookStoreService } from '../../shared/book-store.service';
 import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/do';
 
@@ -7,7 +7,7 @@ export class BookValidators {
     static isbnFormat(control: FormControl): {[error: string]: any} {
         if (!control.value) {
             return null;
-        } 286
+        }
 
         let isolatedNumbers = control.value.replace(/-/g, '');
         const isbnPattern = /(^\d{10}$|^\d{13}$)/;
