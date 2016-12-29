@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BookFormComponent } from './book-form/book-form.component';
 import { DateValueAccessorModule } from 'angular-date-value-accessor';
 import { IsbnPipe } from './shared/isbn.pipe';
+import { ZoomDirective } from './shared/zoom.directive';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { IsbnPipe } from './shared/isbn.pipe';
         BookDetailsComponent,
         HomeComponent,
         BookFormComponent,
-        IsbnPipe
+        IsbnPipe,
+        ZoomDirective
     ],
     imports: [
         BrowserModule,
