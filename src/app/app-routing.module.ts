@@ -11,6 +11,14 @@ export const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent
+    },
+    {
+        path: 'books',
+        loadChildren: 'app/book/book.module#BookModule'
+    },
+    {
+        path: 'admin',
+        loadChildren: 'app/admin/admin.module#AdminModule'
     }
 ];
 

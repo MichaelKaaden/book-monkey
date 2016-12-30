@@ -4,11 +4,11 @@ import { BookFormComponent } from './book-form/book-form.component';
 
 export const routes: Routes = [
   {
-    path: 'admin',
+    path: '',
     component: BookFormComponent
   },
   {
-    path: 'admin/:isbn',
+    path: ':isbn',
     component: BookFormComponent
   }
 ];
