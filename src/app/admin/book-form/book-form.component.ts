@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 
-import { Book } from '../shared/book';
-import { BookFactory } from '../shared/book-factory';
+import { Book } from '../../shared/book';
+import { BookFactory } from '../../shared/book-factory';
 import { BookFormErrorMessages } from './book-form-error-messages';
-import { BookStoreService } from '../shared/book-store.service';
+import { BookStoreService } from '../../shared/book-store.service';
 import { BookValidators } from '../shared/book.validators';
 
 @Component({
@@ -28,14 +28,20 @@ export class BookFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        let isbn = this.route.snapshot.params['isbn'];
-        if (isbn) {
+        // this is done via BookResolver now
+        // let isbn = this.route.snapshot.params['isbn'];
+        // if (isbn) {
+        //     this.isUpdatingBook = true;
+        //     this.bookStoreService.getSingle(isbn)
+        //         .subscribe(book => {
+        //             this.book = book;
+        //             this.initBook();
+        //         });
+        // }
+        let data = this.route.snapshot.data;
+        if (data['book']) {
             this.isUpdatingBook = true;
-            this.bookStoreService.getSingle(isbn)
-                .subscribe(book => {
-                    this.book = book;
-                    this.initBook();
-                });
+            this.book = data['book'];
         }
         this.initBook();
     }

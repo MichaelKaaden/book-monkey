@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Book } from '../shared/book';
-import { BookFactory } from '../shared/book-factory';
-import { BookStoreService } from '../shared/book-store.service';
+import { Book } from '../../shared/book';
+import { BookStoreService } from '../../shared/book-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -18,10 +17,14 @@ export class BookDetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.book = BookFactory.empty();
-        let params = this.route.snapshot.params;
-        this.bookStoreService.getSingle(params['isbn'])
-            .subscribe(book => this.book = book);
+        // this is done via BookResolver now
+
+        // this.book = BookFactory.empty();
+        // let params = this.route.snapshot.params;
+        // this.bookStoreService.getSingle(params['isbn'])
+        //     .subscribe(book => this.book = book);
+
+        this.book = this.route.snapshot.data['book'];
     }
 
     getRating(num: number) {
