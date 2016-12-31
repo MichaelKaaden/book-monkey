@@ -8,14 +8,17 @@ import 'rxjs/add/operator/retry';
 
 import { Book } from './book';
 import { BookFactory } from './book-factory';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BookStoreService {
-    private api: string = 'http://localhost:3000';
+    // private api: string = 'http://localhost:3000';
     // private api: string = 'https://book-monkey2-api.angular-buch.com';
+    private api: string;
     private headers: Headers = new Headers();
 
     constructor(private http: Http) {
+        this.api = environment.apiURL;
         this.headers.append('Content-Type', 'application/json');
     }
 
